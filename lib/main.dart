@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:vibration/vibration.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -17,6 +19,7 @@ class WizPage extends StatefulWidget {
 
 class _WizPageState extends State<WizPage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  final AudioPlayer _player = AudioPlayer();
   bool _isWizzing = false;
 
   @override
@@ -32,18 +35,30 @@ class _WizPageState extends State<WizPage> with SingleTickerProviderStateMixin {
     if (_isWizzing) return;
     setState(() => _isWizzing = true);
     _controller.repeat();
+
+    // VIBRA FORTE
+    if (await Vibration.hasVibrator() ?? false) {
+      Vibration.vibrate(duration: 1000);
+    }
+
+    // TOCA O SOM (vamos adicionar o arquivo depois)
+    // await _player.play(AssetSource('sounds/wiz.mp3'));
+
+    // Tremida + impacto
     for(int i=0; i<5; i++){
       HapticFeedback.heavyImpact();
       await Future.delayed(Duration(milliseconds: 80));
       HapticFeedback.vibrate();
       await Future.delayed(Duration(milliseconds: 80));
     }
+    
     await Future.delayed(Duration(milliseconds: 600));
     _controller.stop();
     _controller.reset();
     setState(() => _isWizzing = false);
+    
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('WIZ!!! Voce chamou a atencao!'), backgroundColor: Colors.blue),
+      SnackBar(content: Text('WIZ!!! 💜 Você chamou atenção!'), backgroundColor: Color(0xFF8A2BE2)),
     );
   }
 
@@ -59,25 +74,26 @@ class _WizPageState extends State<WizPage> with SingleTickerProviderStateMixin {
         );
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black, // FUNDO PRETO OFICIAL
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.chat_bubble, size: 100, color: Colors.blue),
-              SizedBox(height: 20),
-              Text('WIZ', style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Colors.blue)),
-              Text('Chamar Atencao', style: TextStyle(fontSize: 20, color: Colors.grey)),
+              // Z NEON
+              Text('Z', style: TextStyle(fontSize: 120, fontWeight: FontWeight.bold, color: Color(0xFF8A2BE2), shadows: [Shadow(color: Color(0xFF8A2BE2), blurRadius: 20)])),
+              SizedBox(height: 10),
+              Text('WIZ', style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 5)),
+              Text('Chamar Atenção', style: TextStyle(fontSize: 20, color: Colors.grey)),
               SizedBox(height: 60),
               GestureDetector(
                 onTap: sendWiz,
                 child: Container(
-                  width: 200,
+                  width: 220,
                   height: 70,
                   decoration: BoxDecoration(
-                    color: _isWizzing ? Colors.red : Colors.blue,
+                    color: _isWizzing ? Colors.red : Color(0xFF8A2BE2),
                     borderRadius: BorderRadius.circular(35),
-                    boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0,5))],
+                    boxShadow: [BoxShadow(color: Color(0xFF8A2BE2).withOpacity(0.5), blurRadius: 20, offset: Offset(0,5))],
                   ),
                   child: Center(
                     child: Text(
@@ -88,7 +104,7 @@ class _WizPageState extends State<WizPage> with SingleTickerProviderStateMixin {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Vai vibrar e tremer a tela', style: TextStyle(color: Colors.grey)),
+              Text('Vai vibrar + tremer + tocar som', style: TextStyle(color: Colors.grey)),
             ],
           ),
         ),
