@@ -1,0 +1,12 @@
+name: wiz_app
+description: WIZ - O chamar atencao do MSN
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  audioplayers: ^6.0.0
+flutter:
+  uses-material-design: true
