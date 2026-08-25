@@ -8,7 +8,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: flutter create. --platforms=android
+      - run: flutter create . --platforms=android
       - name: Fix SDK 35
         run: |
           sed -i 's/flutter.compileSdkVersion/35/g' android/app/build.gradle
