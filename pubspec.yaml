@@ -1,18 +1,24 @@
 name: wiz_app
-description: Wiz foi feito para estar com você.
+description: Wiz - Chat, lembretes e controle da casa
 publish_to: 'none'
 version: 1.0.0+1
-
 environment:
   sdk: ">=3.0.0 <4.0.0"
-
 dependencies:
   flutter:
     sdk: flutter
   audioplayers: ^6.0.0
   vibration: ^2.0.0
-
+  shared_preferences: ^2.2.2
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
 flutter:
   uses-material-design: true
   assets:
     - assets/sounds/
+    - assets/images/
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "icon.png"
+  min_sdk_android: 21
